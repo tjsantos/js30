@@ -56,33 +56,39 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  // clicking or pressing a key animates the key and plays the corresponding sound
-  //
   const sounds = new Map();
   const keys = new Map();
   for (let audio of document.querySelectorAll(`audio`)) {
-      sounds.set(audio.dataset.key, audio);
+      const keyCode = audio.dataset.key;
+      sounds.set(keyCode, audio);
   }
   for (let key of document.querySelectorAll(`.key`)) {
       const keyCode = key.dataset.key;
       keys.set(keyCode, key);
+
       key.addEventListener(`click`, (event) => {
          playKeyCode(keyCode);
       });
   }
-  function playKeyCode(keyCode) {
-      console.log(`keycode: ${keyCode}`);
-      sounds.get(keyCode).play();
-      // animate key
-      keys.get(keyCode).classList.add(`playing`);
-      setTimeout(() => keys.get(keyCode).classList.remove(`playing`), 100);
-  }
   document.addEventListener(`keydown`, (event) => {
-      const keyCode = event.keyCode.toString();
-      if (keys.has(keyCode)) {
-          playKeyCode(keyCode);
-      }
+      playKeyCode(event.keyCode.toString());
   });
+
+  /* play and animate corresponding key given the keycode */
+  function playKeyCode(keyCode) {
+      if (!keys.has(keyCode)) return;
+
+      console.log(`keycode: ${keyCode}`);
+      const key = keys.get(keyCode);
+      const audio = sounds.get(keyCode);
+      // replay immediately, even if currently playing
+      audio.pause();
+      audio.currentTime = 0;
+      audio.play();
+      // quick animation
+      key.classList.add(`playing`);
+      setTimeout(() => key.classList.remove(`playing`), 50);
+  }
 </script>
 
 </body>
