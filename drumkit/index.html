@@ -56,16 +56,32 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  let sounds = new Map();
+  // clicking or pressing a key animates the key and plays the corresponding sound
+  //
+  const sounds = new Map();
+  const keys = new Map();
   for (let audio of document.querySelectorAll(`audio`)) {
       sounds.set(audio.dataset.key, audio);
   }
+  for (let key of document.querySelectorAll(`.key`)) {
+      const keyCode = key.dataset.key;
+      keys.set(keyCode, key);
+      key.addEventListener(`click`, (event) => {
+         playKeyCode(keyCode);
+      });
+  }
   function playKeyCode(keyCode) {
+      console.log(`keycode: ${keyCode}`);
       sounds.get(keyCode).play();
+      // animate key
+      keys.get(keyCode).classList.add(`playing`);
+      setTimeout(() => keys.get(keyCode).classList.remove(`playing`), 100);
   }
   document.addEventListener(`keydown`, (event) => {
-      console.log(`keycode: ${event.keyCode}`);
-      playKeyCode(event.keyCode.toString());
+      const keyCode = event.keyCode.toString();
+      if (keys.has(keyCode)) {
+          playKeyCode(keyCode);
+      }
   });
 </script>
 
