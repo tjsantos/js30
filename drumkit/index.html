@@ -56,7 +56,17 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-
+  let sounds = new Map();
+  for (let audio of document.querySelectorAll(`audio`)) {
+      sounds.set(audio.dataset.key, audio);
+  }
+  function playKeyCode(keyCode) {
+      sounds.get(keyCode).play();
+  }
+  document.addEventListener(`keydown`, (event) => {
+      console.log(`keycode: ${event.keyCode}`);
+      playKeyCode(event.keyCode.toString());
+  });
 </script>
 
 </body>
