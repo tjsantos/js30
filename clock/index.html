@@ -66,20 +66,33 @@
       width: 35%;
       left: 15%;
     }
+
+    .remove-transition {
+      transition: none !important;
+    }
   </style>
   <script>
+    const hourHand = document.querySelector(`.hour-hand`);
+    const minuteHand = document.querySelector(`.min-hand`);
+    const secondHand = document.querySelector(`.second-hand`);
     function rotateHands() {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         const origin = 0.25;  // initial position 12 o clock or 1/4 turn
-        document.querySelector(`.hour-hand`)
-            .style.transform = `rotate(${origin + hours/12}turn)`;
-        document.querySelector(`.min-hand`)
-            .style.transform = `rotate(${origin + minutes/60}turn)`;
-        document.querySelector(`.second-hand`)
-            .style.transform = `rotate(${origin + seconds/60}turn)`;
+        hourHand.style.transform = `rotate(${origin + hours/12}turn)`;
+        minuteHand.style.transform = `rotate(${origin + minutes/60}turn)`;
+        secondHand.style.transform = `rotate(${origin + seconds/60}turn)`;
+
+        // remove transition when rolling over through 0 (prevents backward animation)
+        if (seconds === 0) secondHand.classList.add(`remove-transition`);
+        else               secondHand.classList.remove(`remove-transition`);
+        if (minutes === 0) minuteHand.classList.add(`remove-transition`);
+        else               minuteHand.classList.remove(`remove-transition`);
+        if (hours === 0) hourHand.classList.add(`remove-transition`);
+        else             hourHand.classList.remove(`remove-transition`);
+
         setTimeout(rotateHands, 1000);
     }
     rotateHands();
