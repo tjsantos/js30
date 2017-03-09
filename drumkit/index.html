@@ -56,6 +56,7 @@
   <audio data-key="76" src="sounds/tink.wav" preload="auto"></audio>
 
 <script>
+  // map keycodes to sounds and displayed keys
   const sounds = new Map();
   const keys = new Map();
   for (let audio of document.querySelectorAll(`audio`)) {
@@ -66,10 +67,16 @@
       const keyCode = key.dataset.key;
       keys.set(keyCode, key);
 
+      // remove animation class after it ends
+      key.addEventListener(`transitionend`, (event) => {
+          event.currentTarget.classList.remove(`playing`);
+      });
+      // play key when clicked
       key.addEventListener(`click`, (event) => {
          playKeyCode(keyCode);
       });
   }
+  // play key when keyboard button pressed
   document.addEventListener(`keydown`, (event) => {
       playKeyCode(event.keyCode.toString());
   });
@@ -87,7 +94,6 @@
       audio.play();
       // quick animation
       key.classList.add(`playing`);
-      setTimeout(() => key.classList.remove(`playing`), 50);
   }
 </script>
 
