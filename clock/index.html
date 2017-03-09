@@ -58,11 +58,31 @@
       background:black;
       position: absolute;
       top:50%;
+      transition: all 0.05s ease-out;
+      transform-origin: right;
     }
 
+    .hand.hour-hand {
+      width: 35%;
+      left: 15%;
+    }
   </style>
   <script>
-
+    function rotateHands() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = now.getMinutes();
+        const s = now.getSeconds();
+        const origin = 0.25;  // initial position 12 o clock or 1/4 turn
+        document.querySelector(`.hour-hand`)
+            .style.transform = `rotate(${origin + h/12}turn)`;
+        document.querySelector(`.min-hand`)
+            .style.transform = `rotate(${origin + m/60}turn)`;
+        document.querySelector(`.second-hand`)
+            .style.transform = `rotate(${origin + s/60}turn)`;
+        setTimeout(rotateHands, 1000);
+    }
+    rotateHands();
   </script>
 </body>
 </html>
