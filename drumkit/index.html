@@ -56,38 +56,13 @@
   <audio data-key="76" src="sounds/tink.wav" preload="auto"></audio>
 
 <script>
-  // map keycodes to sounds and displayed keys
-  const sounds = new Map();
-  const keys = new Map();
-  for (let audio of document.querySelectorAll(`audio`)) {
-      const keyCode = audio.dataset.key;
-      sounds.set(keyCode, audio);
-  }
-  for (let key of document.querySelectorAll(`.key`)) {
-      const keyCode = key.dataset.key;
-      keys.set(keyCode, key);
-
-      // remove animation class after it ends
-      key.addEventListener(`transitionend`, (event) => {
-          event.currentTarget.classList.remove(`playing`);
-      });
-      // play key when clicked
-      key.addEventListener(`click`, (event) => {
-         playKeyCode(keyCode);
-      });
-  }
-  // play key when keyboard button pressed
-  document.addEventListener(`keydown`, (event) => {
-      playKeyCode(event.keyCode.toString());
-  });
-
   /* play and animate corresponding key given the keycode */
   function playKeyCode(keyCode) {
-      if (!keys.has(keyCode)) return;
-
       console.log(`keycode: ${keyCode}`);
-      const key = keys.get(keyCode);
-      const audio = sounds.get(keyCode);
+      const key = document.querySelector(`.key[data-key="${keyCode}"]`);
+      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      if (!key) return;
+
       // replay immediately, even if currently playing
       audio.pause();
       audio.currentTime = 0;
@@ -95,6 +70,21 @@
       // quick animation
       key.classList.add(`playing`);
   }
+  
+  for (let key of document.querySelectorAll(`.key`)) {
+      // remove animation class after it ends
+      key.addEventListener(`transitionend`, (event) => {
+          event.currentTarget.classList.remove(`playing`);
+      });
+      // play key when clicked
+      key.addEventListener(`click`, (event) => {
+         playKeyCode(key.dataset.key);
+      });
+  }
+  // play key when keyboard button pressed
+  document.addEventListener(`keydown`, (event) => {
+      playKeyCode(event.keyCode.toString());
+  });
 </script>
 
 </body>
