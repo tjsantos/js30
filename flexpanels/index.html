@@ -131,11 +131,7 @@
       panels.forEach((panel) => {
           // open or close the clicked panel
           panel.addEventListener(`click`, (event) => {
-              const current = event.currentTarget;
-              panels.forEach((panel) => {
-                  if (panel === current) panel.classList.toggle(`open`);
-                  else                   panel.classList.remove(`open`);
-              });
+              event.currentTarget.classList.toggle(`open`);
           });
       });
   </script>
