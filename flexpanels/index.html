@@ -47,6 +47,7 @@
       display: flex;
       flex-flow: column nowrap;
       justify-content: space-around;
+      cursor: pointer;
     }
 
 
@@ -59,7 +60,7 @@
     .panel > * {
       margin:0;
       width: 100%;
-      transition:transform 0.5s;
+      transition:transform 0.5s 0.5s;
     }
 
     .panel p {
@@ -71,8 +72,11 @@
     .panel p:nth-child(2) {
       font-size: 4em;
     }
-    .panel p:nth-child(odd) {
-      display: none;
+    .panel p:nth-child(1) {
+      transform: translate(0, -100vh);
+    }
+    .panel p:nth-child(3) {
+      transform: translate(0, 100vh);
     }
 
     .panel.open {
@@ -80,7 +84,7 @@
       flex: 5;
     }
     .panel.open p:nth-child(odd) {
-      display: initial;
+      transform: translate(0, 0%);
     }
 
   </style>
@@ -117,15 +121,16 @@
   <script>
       const panels = Array.from(document.querySelectorAll(`.panel`));
       panels.forEach((panel) => {
-          // "open" the clicked panel
+          // open or close the clicked panel
           panel.addEventListener(`click`, (event) => {
-              panels.forEach((panel) => panel.classList.remove(`open`));
-              event.currentTarget.classList.add(`open`);
+              const current = event.currentTarget;
+              panels.forEach((panel) => {
+                  if (panel === current) panel.classList.toggle(`open`);
+                  else                   panel.classList.remove(`open`);
+              });
           });
       });
   </script>
-
-
 
 </body>
 </html>
