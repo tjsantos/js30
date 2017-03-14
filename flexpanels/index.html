@@ -77,6 +77,10 @@
 
     .panel.open {
       font-size:40px;
+      flex: 5;
+    }
+    .panel.open p:nth-child(odd) {
+      display: initial;
     }
 
   </style>
@@ -111,7 +115,14 @@
   </div>
 
   <script>
-
+      const panels = Array.from(document.querySelectorAll(`.panel`));
+      panels.forEach((panel) => {
+          // "open" the clicked panel
+          panel.addEventListener(`click`, (event) => {
+              panels.forEach((panel) => panel.classList.remove(`open`));
+              event.currentTarget.classList.add(`open`);
+          });
+      });
   </script>
 
 
