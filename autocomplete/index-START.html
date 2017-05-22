@@ -16,7 +16,10 @@
   </form>
 <script>
 const endpoint = 'cities.json';
-
+let cities;
+fetch(endpoint)
+    .then(r => r.json())
+    .then(json => cities = json);
 </script>
   </body>
 </html>
