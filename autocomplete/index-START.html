@@ -20,6 +20,40 @@ let cities;
 fetch(endpoint)
     .then(r => r.json())
     .then(json => cities = json);
+
+let filtered;
+document.querySelector(`.search`)
+    .addEventListener(`input`, event => {
+        const text = event.currentTarget.value;
+        if (!text) {
+            document.querySelector(`.suggestions`)
+                .innerHTML = `<li>Filter for a city</li><li>or a state</li>`;
+            return;
+        }
+
+        filtered = cities.filter(city => `${city.city} ${city.state}`.toLowerCase().includes(text));
+        console.log(filtered.slice(0,3));
+        let oldList = document.querySelector(`.suggestions`);
+        let newList = oldList.cloneNode(false);  // clone list without children
+        filtered.forEach(city => {
+            let li = document.createElement(`li`);
+            let location = document.createElement(`span`);
+            location.textContent = `${city.city}, ${city.state}`;
+            location.classList.add(`location`);
+            let population = document.createElement(`span`);
+            population.textContent = city.population;
+            population.classList.add(`population`);
+
+            li.appendChild(location);
+            li.appendChild(population);
+            newList.appendChild(li);
+        });
+
+        if (filtered.length === 0) {
+            newList.innerHTML = `<li>No suggestions found.</li>`;
+        }
+        oldList.parentNode.replaceChild(newList, oldList);
+    });
 </script>
   </body>
 </html>
