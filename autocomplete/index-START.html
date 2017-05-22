@@ -31,14 +31,15 @@ document.querySelector(`.search`)
             return;
         }
 
-        filtered = cities.filter(city => `${city.city} ${city.state}`.toLowerCase().includes(text));
-        console.log(filtered.slice(0,3));
+        const regex = new RegExp(text, `gi`);
+        filtered = cities.filter(city => regex.test(`${city.city} ${city.state}`));
+
         let oldList = document.querySelector(`.suggestions`);
         let newList = oldList.cloneNode(false);  // clone list without children
         filtered.forEach(city => {
             let li = document.createElement(`li`);
             let location = document.createElement(`span`);
-            location.textContent = `${city.city}, ${city.state}`;
+            location.innerHTML = `${city.city}, ${city.state}`.replace(regex, `<mark class="hl">$&</mark>`);
             location.classList.add(`location`);
             let population = document.createElement(`span`);
             population.textContent = city.population;
