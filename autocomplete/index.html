@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+/**
+ * Compared to reference solution:
+ * - fixed: input casing does not change original text casing
+ * - feature: default instructions when input returns to empty
+ * - feature: inform when "no suggestions found"
+ * - note: implementation uses html strings, but can also use nodes/createElement
+ * - future: spellcheck suggestions
+ */
+const endpoint = 'cities.json';
+let cities;
+fetch(endpoint)
+    .then(r => r.json())
+    .then(json => cities = json);
+
+const suggestions = document.querySelector(`.suggestions`);
+document.querySelector(`.search`)
+    .addEventListener(`input`, event => {
+        const text = event.currentTarget.value;
+        // default list text
+        if (!text) {
+            suggestions.innerHTML = `<li>Filter for a city</li><li>or a state</li>`;
+            return;
+        }
+
+        // filtered list
+        const regex = new RegExp(text, `gi`);
+        const filtered = cities.filter(city => regex.test(`${city.city} ${city.state}`));
+        let newHTML = filtered.map(city => {
+            const location = `${city.city}, ${city.state}`.replace(regex, `<mark class="hl">$&</mark>`);
+            const population = Number(city.population).toLocaleString();
+
+            return `
+              <li>
+                <span class="location">${location}</span>
+                <span class="population">${population}</span>
+              </li>
+            `
+        }).join(``);
+
+        if (!newHTML) {
+            newHTML = `<li>No suggestions found.</li>`;
+        }
+        suggestions.innerHTML = newHTML;
+    });
+</script>
+</body>
+</html>
