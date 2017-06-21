@@ -26,6 +26,21 @@ controls.querySelector(`input[name="playbackRate"]`)
     });
 
 // clickable progress slider
+const progress = controls.querySelector(`.progress`);
+progress.addEventListener(`click`, (e) => {
+   const rect = e.currentTarget.getBoundingClientRect();
+   const percentage = (e.clientX - rect.left) / rect.width;
+   video.currentTime = percentage * video.duration;
+});
 
+// render progress bar
+const progressFilled = controls.querySelector(`.progress__filled`);
+video.addEventListener(`timeupdate`, (e) => {
+    progressFilled.style.flexBasis = `${(video.currentTime / video.duration) * 100}%`;
+});
 
 // jump forward/back
+controls.querySelectorAll(`button[data-skip]`)
+    .forEach(button => button.addEventListener(`click`, (e) => {
+        video.currentTime += (+button.dataset.skip);
+    }));
