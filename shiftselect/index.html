@@ -38,6 +38,7 @@
 
     input[type="checkbox"] {
       margin:20px;
+      cursor: pointer;
     }
 
     p {
@@ -99,6 +100,24 @@
   </div>
 
 <script>
+  let inbox = document.querySelector(`.inbox`);
+  let lastSelect = null;
+  inbox.addEventListener(`click`, (e) => {
+      if (e.target.matches(`input`)) {
+          if (e.shiftKey && lastSelect) {
+              const inputs = Array.from(inbox.querySelectorAll(`input[type="checkbox"]`));
+              // only check the inputs between i and j
+              let i = inputs.indexOf(lastSelect);
+              let j = inputs.indexOf(e.target);
+              if (i > j) [i, j] = [j, i];  // i is smaller index
+              inputs.forEach((input, index) => {
+                  input.checked = (index >= i && index <= j);
+              })
+          } else {
+              lastSelect = e.target;
+          }
+      }
+  });
 </script>
 </body>
 </html>
