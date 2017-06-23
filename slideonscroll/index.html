@@ -43,6 +43,13 @@
   </div>
 
   <script>
+      /**
+       * Compared to reference solution:
+       * - obtains actual image position using `getBoundingClientRect`
+       * - more robust than `offsetTop` which is only relative to its parent element
+       * - better scroll performance with `requestAnimationFrame` instead of custom `debounce` throttle function
+       */
+
       // when document is ready and images are loaded
       function ready(fn) {
           if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
