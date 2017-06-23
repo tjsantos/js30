@@ -43,21 +43,52 @@
   </div>
 
   <script>
-    function debounce(func, wait = 20, immediate = true) {
-      var timeout;
-      return function() {
-        var context = this, args = arguments;
-        var later = function() {
-          timeout = null;
-          if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-      };
-    }
+      // when document is ready and images are loaded
+      function ready(fn) {
+          if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+              fn();
+          } else {
+              document.addEventListener('DOMContentLoaded', fn);
+          }
+      }
 
+      ready(() => {
+          // obtain image position and size
+          const images = Array.from(document.querySelectorAll(`img`))
+              .map((img) => {
+                  const rect = img.getBoundingClientRect();
+                  return {
+                      img: img,
+                      top: rect.top + scrollY,
+                      height: rect.height
+                  }
+              });
+
+          const portion = 0.5;  // when portion of image is on screen, slide in
+          function slideIn(e) {
+              images.forEach((image, i) => {
+                  const topWithin = scrollY + innerHeight > image.top + image.height * portion;
+                  const bottomWithin = scrollY < image.top + image.height;
+                  if (topWithin && bottomWithin) {
+                      image.img.classList.add(`active`);
+                  } else {
+                      image.img.classList.remove(`active`);
+                  }
+              });
+          }
+
+          // throttle scroll event functions to optimize performance
+          let ticking = false;
+          window.addEventListener(`scroll`, (e) => {
+              if (!ticking) {
+                  requestAnimationFrame(() => {
+                      slideIn(e);
+                      ticking = false;
+                  })
+              }
+              ticking = true;
+          });
+      });
   </script>
 
   <style>
