@@ -76,3 +76,16 @@
       outline:0;
       border:1px solid rgba(0,0,0,0.1);
     }
+
+    .plates li button {
+      visibility: hidden;
+      cursor: pointer;
+    }
+
+    .plates li:hover button {
+      visibility: visible;
+    }
+
+    .plates li button:hover {
+      color: red;
+    }
