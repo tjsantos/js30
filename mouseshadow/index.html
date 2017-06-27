@@ -35,20 +35,20 @@
   </style>
 
 <script>
-  let center = {x: 0, y: 0};
-
-  function updateCenter() {
+  let text = document.querySelector(`h1`);
+  let scale = 100;  // range in px for the dynamic text shadow
+  function updateShadow(e) {
       const bodyRect = document.body.getBoundingClientRect();
       const elemRect = document.querySelector(`h1`).getBoundingClientRect();
-      center = {
+      const center = {
           x: elemRect.left - bodyRect.left + elemRect.width/2,
           y: elemRect.top - bodyRect.top + elemRect.height/2
       };
-  }
 
-  function updateShadow(e) {
-      updateCenter();
-      console.log(e.pageX - center.x, e.pageY - center.y);
+      const shadowX = scale * (e.pageX - center.x)/window.innerWidth;
+      const shadowY = scale * (e.pageY - center.y)/window.innerHeight;
+
+      text.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(0,0,0,1)`;
   }
 
   window.addEventListener(`mousemove`, throttle(updateShadow));
