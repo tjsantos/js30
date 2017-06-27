@@ -35,6 +35,43 @@
   </style>
 
 <script>
+  let center = {x: 0, y: 0};
+
+  function updateCenter() {
+      const bodyRect = document.body.getBoundingClientRect();
+      const elemRect = document.querySelector(`h1`).getBoundingClientRect();
+      center = {
+          x: elemRect.left - bodyRect.left + elemRect.width/2,
+          y: elemRect.top - bodyRect.top + elemRect.height/2
+      };
+  }
+
+  function updateShadow(e) {
+      updateCenter();
+      console.log(e.pageX - center.x, e.pageY - center.y);
+  }
+
+  window.addEventListener(`mousemove`, throttle(updateShadow));
+
+  /**
+   * Decorator to throttle function to only run once on the next frame.
+   */
+  function throttle(fn) {
+      let running = false;
+      function throttled() {
+          if (running) return;
+
+          running = true;
+          let context = this;
+          let args = arguments;
+          requestAnimationFrame(() => {
+              fn.apply(context, args);
+              running = false;
+          });
+      }
+
+      return throttled;
+  }
 </script>
 </body>
 </html>
