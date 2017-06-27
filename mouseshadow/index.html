@@ -36,7 +36,7 @@
 
 <script>
   let text = document.querySelector(`h1`);
-  let scale = 100;  // range in px for the dynamic text shadow
+  let scale = 500;  // range in px for the dynamic text shadow
   function updateShadow(e) {
       const bodyRect = document.body.getBoundingClientRect();
       const elemRect = document.querySelector(`h1`).getBoundingClientRect();
@@ -48,7 +48,12 @@
       const shadowX = scale * (e.pageX - center.x)/window.innerWidth;
       const shadowY = scale * (e.pageY - center.y)/window.innerHeight;
 
-      text.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(0,0,0,1)`;
+      text.style.textShadow = `
+          ${shadowX}px ${shadowY}px 0 rgba(255,0,255,0.7),
+          ${shadowX * -1}px ${shadowY}px 0 rgba(0,255,255,0.7),
+          ${shadowY}px ${shadowX * -1}px 0 rgba(0,255,0,0.7),
+          ${shadowY * -1}px ${shadowX}px 0 rgba(0,0,255,0.7)
+      `;
   }
 
   window.addEventListener(`mousemove`, throttle(updateShadow));
