@@ -35,6 +35,10 @@
   </style>
 
 <script>
+  /**
+   * Features a decorator throttle function for performance,
+   * and preserves correctness of shadow on window resizing.
+   * */
   let text = document.querySelector(`h1`);
   let scale = 500;  // range in px for the dynamic text shadow
   function updateShadow(e) {
