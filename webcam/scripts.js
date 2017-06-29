@@ -66,6 +66,9 @@ function takePhoto() {
     img.src = canvas.toDataURL(`image/jpeg`);
     img.alt = `webcam capture at ` + new Date().toLocaleString();
     strip.appendChild(img);
+    snap.pause();
+    snap.currentTime = 0;
+    snap.play();
 }
 
 document.querySelector(`input[name="mirrored"]`).addEventListener(`change`, (e) => {
