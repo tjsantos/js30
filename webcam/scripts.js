@@ -62,10 +62,19 @@ function manipulateImage(frame) {
 }
 
 function takePhoto() {
+    const data = canvas.toDataURL(`image/jpeg`);
+
+    let link = document.createElement(`a`);
+    link.href = data;
+    link.download = `handsome`;
     let img = document.createElement(`img`);
-    img.src = canvas.toDataURL(`image/jpeg`);
+    img.src = data;
     img.alt = `webcam capture at ` + new Date().toLocaleString();
-    strip.appendChild(img);
+
+    link.appendChild(img);
+    strip.appendChild(link);
+
+    // sound effect
     snap.pause();
     snap.currentTime = 0;
     snap.play();
