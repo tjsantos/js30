@@ -9,6 +9,7 @@ const snap = document.querySelector('.snap');
 let frameId;
 const options = {
     mirrored: false,
+    rgbSplit: false,
 };
 
 navigator.mediaDevices
@@ -37,8 +38,11 @@ function computeFrame(timestamp) {
 
 function manipulateImage(frame) {
     const {data, width, height} = frame;
+
     if (options.mirrored) {
         // mirror the image
+        // this is just an example of image data manipulation with js;
+        // can easily be done with a simple css rule - transform: scaleX(-1);
         for (let j = 0; j < height; j++) {
             for (let i = 0; i < width/2; i++) {
                 const left = 4 * (j*width + i);
@@ -57,6 +61,29 @@ function manipulateImage(frame) {
                 data[right + 2] = tempb;
                 data[right + 3] = tempa;
             }
+        }
+    }
+
+    // rgb split
+    if (options.rgbSplit) {
+        for (let i = 0; i < data.length; i += 4) {
+            data[i - 150] = data[i];
+            data[i + 100] = data[i + 1];
+            data[i - 550] = data[i + 2];
+        }
+    }
+
+    // green screen
+    const levels = {};
+    document.querySelectorAll(`.rgb input`).forEach((input) => {
+        levels[input.name] = input.value;
+    });
+    for (let i = 0; i < data.length; i += 4) {
+        const [r, g, b] = [data[i], data[i+1], data[i+2]];
+        if ((r >= levels.rmin && r <= levels.rmax) &&
+            (g >= levels.gmin && g <= levels.gmax) &&
+            (b >= levels.bmin && b <= levels.bmax)) {
+            data[i+3] = 0;  // set alpha to 0 => transparent
         }
     }
 }
@@ -80,6 +107,9 @@ function takePhoto() {
     snap.play();
 }
 
-document.querySelector(`input[name="mirrored"]`).addEventListener(`change`, (e) => {
-    options.mirrored = e.currentTarget.checked;
-});
+for (let option in options) {
+    document.querySelector(`input[name="${option}"]`)
+        .addEventListener(`change`, (e) => {
+           options[option] = e.currentTarget.checked;
+        });
+}
