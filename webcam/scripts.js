@@ -93,7 +93,7 @@ function takePhoto() {
 
     let link = document.createElement(`a`);
     link.href = data;
-    link.download = `handsome`;
+    link.download = `handsome.jpg`;
     let img = document.createElement(`img`);
     img.src = data;
     img.alt = `webcam capture at ` + new Date().toLocaleString();
