@@ -35,10 +35,24 @@
   </div>
 
 <script>
+  // note: uses `MouseEvent.movementX` instead of initializing `startX`/`scrollLeft`
   const scroller = document.querySelector(`.items`);
+  // let startX = 0;
+  // let scrollLeft = 0;
 
+  scroller.addEventListener(`mouseleave`, () => {
+      scroller.classList.remove(`active`);
+  });
+  scroller.addEventListener(`mouseup`, () => {
+      scroller.classList.remove(`active`);
+  });
+  scroller.addEventListener(`mousedown`, (e) => {
+      scroller.classList.add(`active`);
+      //startX = e.clientX;
+      //scrollLeft = scroller.scrollLeft;
+  });
   scroller.addEventListener(`mousemove`, (e) => {
-      if (e.buttons) {
+      if (e.buttons) {  // or `scroller.classList.contains(`active`)`
           scroller.scroll(scroller.scrollLeft - e.movementX, 0);
       }
   });
