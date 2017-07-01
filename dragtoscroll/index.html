@@ -35,6 +35,13 @@
   </div>
 
 <script>
+  const scroller = document.querySelector(`.items`);
+
+  scroller.addEventListener(`mousemove`, (e) => {
+      if (e.buttons) {
+          scroller.scroll(scroller.scrollLeft - e.movementX, 0);
+      }
+  });
 </script>
 
   </body>
