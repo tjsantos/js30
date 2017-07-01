@@ -15,7 +15,24 @@
   </div>
 
 <script>
+  const slider = document.querySelector(`.speed`);
+  const bar = document.querySelector(`.speed-bar`);
+  const maxSpeed = 4.0;
 
+  function setSpeed(e) {
+      const rect = slider.getBoundingClientRect();
+      const fraction = (e.clientY - rect.top) / rect.height;
+      const speed = +(fraction * maxSpeed).toFixed(1);  // rounded to 1 decimal
+      if (speed <= 0 || speed > maxSpeed) return;
+
+      bar.textContent = `${speed}x`;
+      bar.style.height = `${100 * speed / maxSpeed}%`;
+
+      document.querySelector(`video`).playbackRate = speed;
+  }
+
+  slider.addEventListener(`click`, setSpeed);
+  slider.addEventListener(`mousemove`, e => e.buttons && setSpeed(e));
 </script>
 </body>
 </html>
