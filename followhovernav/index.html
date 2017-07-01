@@ -224,8 +224,14 @@
       });
       li.addEventListener(`mouseenter`, () => {
           li.classList.add(`trigger-enter`);
-          li.classList.add(`trigger-enter-active`);
+          setTimeout(() => {
+              // opacity transition effect
+              if (li.classList.contains(`trigger-enter`)) {
+                  li.classList.add(`trigger-enter-active`);
+              }
+          }, 50);
 
+          // background move effect
           hover.classList.add(`open`);
           const rect = li.querySelector(`.dropdown`).getBoundingClientRect();
           const parentRect = hover.parentNode.getBoundingClientRect();
