@@ -27,6 +27,22 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const hover = document.createElement(`div`);
+    hover.classList.add(`highlight`);
+    document.body.appendChild(hover);
+
+    function follow(el) {
+        const rect = el.getBoundingClientRect();
+        for (let prop of [`left`, `top`, `width`, `height`]) {
+            hover.style[prop] = `${rect[prop]}px`;
+        }
+    }
+
+    follow(document.querySelector(`a`));
+
+    document.body.addEventListener(`mouseover`, (e) => {
+        if (e.target.matches(`a`)) follow(e.target);
+    });
   </script>
 </body>
 </html>
