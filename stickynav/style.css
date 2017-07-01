@@ -48,6 +48,10 @@ nav {
   z-index: 1;
 }
 
+nav.sticky {
+  position: fixed;
+}
+
 nav ul {
   margin: 0;
   padding:0;
@@ -70,6 +74,10 @@ li.logo {
   transition: all .5s;
   font-weight: 600;
   font-size: 30px;
+}
+
+nav.sticky .logo {
+  max-width: unset;
 }
 
 li.logo a {

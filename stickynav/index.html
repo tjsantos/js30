@@ -54,6 +54,17 @@
   </div>
 
 <script>
+  function ready(fn) {
+      document.readyState === `complete` ? fn() : window.addEventListener(`load`, fn());
+  }
+
+  ready(() => {
+     const nav = document.querySelector(`nav`);
+     const top = nav.getBoundingClientRect().top + window.scrollY;
+     window.addEventListener(`scroll`, (e) => {
+         window.scrollY >= top ? nav.classList.add(`sticky`) : nav.classList.remove(`sticky`);
+     });
+  });
 
 </script>
 
