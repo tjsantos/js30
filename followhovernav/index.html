@@ -57,7 +57,7 @@
       <li>
         <a href="#">Other Links</a>
         <ul class="dropdown dropdown3">
-          <li><a class="button" href="http://twitter.com/wesbos">Twiter</a></li>
+          <li><a class="button" href="http://twitter.com/wesbos">Twitter</a></li>
           <li><a class="button" href="http://facebook.com/wesbos.developer">Facebook</a></li>
           <li><a class="button" href="http://wesbos.com">Blog</a></li>
           <li><a class="button" href="http://wesbos.com/courses">Course Catalog</a></li>
@@ -214,6 +214,28 @@
 </style>
 
 <script>
+  const hover = document.querySelector(`.dropdownBackground`);
+  const list = document.querySelectorAll(`.cool > li`);
+  list.forEach((li) => {
+      li.addEventListener(`mouseleave`, () => {
+          li.classList.remove(`trigger-enter`);
+          li.classList.remove(`trigger-enter-active`);
+          hover.classList.remove(`open`);
+      });
+      li.addEventListener(`mouseenter`, () => {
+          li.classList.add(`trigger-enter`);
+          li.classList.add(`trigger-enter-active`);
+
+          hover.classList.add(`open`);
+          const rect = li.querySelector(`.dropdown`).getBoundingClientRect();
+          const parentRect = hover.parentNode.getBoundingClientRect();
+          // position rect relative to `hover` parent rect
+          hover.style.top = `${rect.top - parentRect.top}px`;
+          hover.style.left = `${rect.left - parentRect.left}px`;
+          hover.style.width = `${rect.width}px`;
+          hover.style.height = `${rect.height}px`;
+      });
+  });
 </script>
 
 </body>
