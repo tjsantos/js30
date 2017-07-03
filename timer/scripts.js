@@ -7,6 +7,7 @@ let timeout;
 function setTimer(seconds) {
     clearTimeout(timeout);
     const end = new Date(Date.now() + seconds*1000);
+
     const hours = end.getHours() % 12 || 12;
     let minutes = end.getMinutes();
     if (minutes < 10) minutes = `0` + minutes;  // left-pad `0`
@@ -23,6 +24,7 @@ function setTimer(seconds) {
             seconds = seconds % 60;
             if (seconds < 10) seconds = `0` + seconds;  // left-pad `0`
             timeLeft.textContent = `${minutes}:${seconds}`;
+            document.title = timeLeft.textContent;
 
             timeout = setTimeout(tick, 1000);
         }
