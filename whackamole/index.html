@@ -33,9 +33,57 @@
   </div>
 
 <script>
+    /**
+     * fixed: mole now disappears when bonked, and can only be bonked once
+     */
   const holes = document.querySelectorAll('.hole');
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
+  let score = 0;
+  let finished = false;
+
+  function randInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function peep() {
+      if (finished) return;
+
+      // choose a random mole that isn't "up"
+      let mole;
+      do { mole = moles[randInt(0, moles.length - 1)]; }
+      while (mole.classList.contains(`up`));
+
+      const time = randInt(200, 1000);
+      mole.classList.add(`up`);
+      setTimeout(() => {
+          peep();  // note: pick the next hole to peep BEFORE removing `up` class
+          mole.classList.remove(`up`);
+      }, time);
+  }
+
+  function bonk(e) {
+      console.log(e);
+      if (!this.classList.contains(`up`)) return;
+
+      score += 1;
+      scoreBoard.textContent = score;
+      this.classList.remove(`up`);
+  }
+
+  moles.forEach((mole) => {
+      mole.addEventListener(`click`, bonk);
+  });
+
+  function startGame() {
+      score = 0;
+      scoreBoard.textContent = score;
+      peep();
+      finished = false;
+      setTimeout(() => finished = true, 10000);
+  }
 
 </script>
 </body>
