@@ -9,7 +9,7 @@
 <body>
 
   <h1>Whack-a-mole! <span class="score">0</span></h1>
-  <div class="start"><button onClick="startGame()">Start!</button></div>
+  <div class="start"><button>Start!</button></div>
 
   <div class="game">
     <div class="hole hole1">
@@ -40,9 +40,25 @@
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
   let score = 0;
-  let finished = false;
-  const startButton = document.querySelector(`.start button`);
+  const startButton = document.querySelector(`.start button`);  // disabled when game is running
 
+  function setTimer(time) {
+      const endTime = Date.now() + time;
+      startButton.disabled = true;
+      let interval;
+      function countDown() {
+          const now = Date.now();
+          if (now > endTime) {
+              startButton.disabled = false;
+              startButton.textContent = `Start!`;
+          } else {
+              const timeLeft = endTime - now;
+              startButton.textContent = Math.ceil(timeLeft / 1000);
+              requestAnimationFrame(countDown);
+          }
+      }
+      requestAnimationFrame(countDown);
+  }
 
   function randInt(min, max) {
       min = Math.ceil(min);
@@ -51,7 +67,7 @@
   }
 
   function peep() {
-      if (finished) return;
+      if (!startButton.disabled) return;
 
       // choose a random mole that isn't "up"
       let mole;
@@ -82,10 +98,11 @@
       console.log(`starting game`);
       score = 0;
       scoreBoard.textContent = score;
-      finished = false;
-      setTimeout(() => finished = true, 10000);
+      setTimer(10000);  // length of the game
       peep();
   }
+
+  startButton.addEventListener(`click`, startGame);
 
 </script>
 </body>
