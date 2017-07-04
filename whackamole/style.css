@@ -68,3 +68,11 @@ h1 {
 .mole.up {
   top:0;
 }
+
+.start {
+  text-align: center;
+}
+
+.start button {
+  font-size: 3rem;
+}
