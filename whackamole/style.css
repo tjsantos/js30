@@ -81,4 +81,9 @@ h1 {
 .start button {
   font-size: 3rem;
   width: 12rem;
+  cursor: pointer;
+}
+
+.start button:disabled {
+  cursor: auto;
 }
